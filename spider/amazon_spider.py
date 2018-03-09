@@ -6,14 +6,15 @@ import requests
 from requests.exceptions import RequestException
 from pyquery import PyQuery as pq
 import pymongo
-from multiprocessing import Pool
+# from multiprocessing import Pool
 import re
 
 client = pymongo.MongoClient('localhost')
 db = client['amazon']
 
+# 初始URL
 start_url = "https://www.amazon.com/Best-Sellers/zgbs/ref=zg_bsnr_tab"
-
+# base_url用于构造完整URL
 base_url = "https://www.amazon.com"
 
 
@@ -58,9 +59,10 @@ def save_to_mongo(data):
 
 
 def main():
-    pool = Pool()
+    # pool = Pool()
     start_page = get_page_html(start_url)
     doc = pq(start_page)
+    # 找到初始的每一类商品链接
     items_links = doc('.zg_homeWidget').items()
     for items_link in items_links:
         url = items_link('.zg_homeListLink a').attr('href')
